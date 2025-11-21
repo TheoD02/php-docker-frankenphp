@@ -3,10 +3,193 @@
  * Do not make direct changes to the file.
  */
 
-export type paths = Record<string, never>;
+export interface paths {
+    "/api/articles": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Retrieves the collection of Article resources.
+         * @description Retrieves the collection of Article resources.
+         */
+        get: operations["api_articles_get_collection"];
+        put?: never;
+        /**
+         * Creates a Article resource.
+         * @description Creates a Article resource.
+         */
+        post: operations["api_articles_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/articles/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Retrieves a Article resource.
+         * @description Retrieves a Article resource.
+         */
+        get: operations["api_articles_id_get"];
+        put?: never;
+        post?: never;
+        /**
+         * Removes the Article resource.
+         * @description Removes the Article resource.
+         */
+        delete: operations["api_articles_id_delete"];
+        options?: never;
+        head?: never;
+        /**
+         * Updates the Article resource.
+         * @description Updates the Article resource.
+         */
+        patch: operations["api_articles_id_patch"];
+        trace?: never;
+    };
+}
 export type webhooks = Record<string, never>;
 export interface components {
-    schemas: never;
+    schemas: {
+        Article: {
+            readonly id?: number;
+            title?: string;
+            content?: string;
+        };
+        "Article.jsonMergePatch": {
+            readonly id?: number;
+            title?: string;
+            content?: string;
+        };
+        "Article.jsonld": components["schemas"]["HydraItemBaseSchema"] & {
+            readonly id?: number;
+            title?: string;
+            content?: string;
+        };
+        /** @description Unprocessable entity */
+        ConstraintViolation: {
+            /** @default 422 */
+            status: number;
+            violations?: {
+                /** @description The property path of the violation */
+                propertyPath?: string;
+                /** @description The message associated with the violation */
+                message?: string;
+            }[];
+            readonly detail?: string;
+            readonly type?: string;
+            readonly title?: string | null;
+            readonly instance?: string | null;
+        };
+        /** @description Unprocessable entity */
+        "ConstraintViolation.jsonld": components["schemas"]["HydraItemBaseSchema"] & {
+            /** @default 422 */
+            status: number;
+            violations?: {
+                /** @description The property path of the violation */
+                propertyPath?: string;
+                /** @description The message associated with the violation */
+                message?: string;
+            }[];
+            readonly detail?: string;
+            readonly description?: string;
+            readonly type?: string;
+            readonly title?: string | null;
+            readonly instance?: string | null;
+        };
+        /** @description A representation of common errors. */
+        Error: {
+            /** @description A short, human-readable summary of the problem. */
+            readonly title?: string;
+            /** @description A human-readable explanation specific to this occurrence of the problem. */
+            readonly detail?: string;
+            /**
+             * @default 400
+             * @example 404
+             */
+            status: number;
+            /** @description A URI reference that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced. */
+            readonly instance?: string | null;
+            /** @description A URI reference that identifies the problem type */
+            readonly type?: string;
+        };
+        /** @description A representation of common errors. */
+        "Error.jsonld": components["schemas"]["HydraItemBaseSchema"] & {
+            /** @description A short, human-readable summary of the problem. */
+            readonly title?: string;
+            /** @description A human-readable explanation specific to this occurrence of the problem. */
+            readonly detail?: string;
+            /**
+             * @default 400
+             * @example 404
+             */
+            status: number;
+            /** @description A URI reference that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced. */
+            readonly instance?: string | null;
+            /** @description A URI reference that identifies the problem type */
+            readonly type?: string;
+            readonly description?: string | null;
+        };
+        HydraCollectionBaseSchema: components["schemas"]["HydraCollectionBaseSchemaNoPagination"] & {
+            /**
+             * @example {
+             *       "@id": "string",
+             *       "type": "string",
+             *       "first": "string",
+             *       "last": "string",
+             *       "previous": "string",
+             *       "next": "string"
+             *     }
+             */
+            view?: {
+                /** Format: iri-reference */
+                "@id"?: string;
+                "@type"?: string;
+                /** Format: iri-reference */
+                first?: string;
+                /** Format: iri-reference */
+                last?: string;
+                /** Format: iri-reference */
+                previous?: string;
+                /** Format: iri-reference */
+                next?: string;
+            };
+        };
+        HydraCollectionBaseSchemaNoPagination: {
+            totalItems?: number;
+            search?: {
+                "@type"?: string;
+                template?: string;
+                variableRepresentation?: string;
+                mapping?: {
+                    "@type"?: string;
+                    variable?: string;
+                    property?: string | null;
+                    required?: boolean;
+                }[];
+            };
+        };
+        HydraItemBaseSchema: {
+            "@context"?: string | ({
+                "@vocab": string;
+                /** @enum {string} */
+                hydra: "http://www.w3.org/ns/hydra/core#";
+            } & {
+                [key: string]: unknown;
+            });
+            "@id": string;
+            "@type": string;
+        };
+    };
     responses: never;
     parameters: never;
     requestBodies: never;
@@ -14,4 +197,204 @@ export interface components {
     pathItems: never;
 }
 export type $defs = Record<string, never>;
-export type operations = Record<string, never>;
+export interface operations {
+    api_articles_get_collection: {
+        parameters: {
+            query?: {
+                /** @description The collection page number */
+                page?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Article collection */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["HydraCollectionBaseSchema"] & {
+                        member: components["schemas"]["Article.jsonld"][];
+                    };
+                };
+            };
+        };
+    };
+    api_articles_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description The new Article resource */
+        requestBody: {
+            content: {
+                "application/ld+json": components["schemas"]["Article"];
+            };
+        };
+        responses: {
+            /** @description Article resource created */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["Article.jsonld"];
+                };
+            };
+            /** @description Invalid input */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["Error.jsonld"];
+                    "application/problem+json": components["schemas"]["Error"];
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description An error occurred */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["ConstraintViolation.jsonld"];
+                    "application/problem+json": components["schemas"]["ConstraintViolation"];
+                    "application/json": components["schemas"]["ConstraintViolation"];
+                };
+            };
+        };
+    };
+    api_articles_id_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Article identifier */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Article resource */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["Article.jsonld"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["Error.jsonld"];
+                    "application/problem+json": components["schemas"]["Error"];
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    api_articles_id_delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Article identifier */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Article resource deleted */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["Error.jsonld"];
+                    "application/problem+json": components["schemas"]["Error"];
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    api_articles_id_patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Article identifier */
+                id: string;
+            };
+            cookie?: never;
+        };
+        /** @description The updated Article resource */
+        requestBody: {
+            content: {
+                "application/merge-patch+json": components["schemas"]["Article.jsonMergePatch"];
+            };
+        };
+        responses: {
+            /** @description Article resource updated */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["Article.jsonld"];
+                };
+            };
+            /** @description Invalid input */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["Error.jsonld"];
+                    "application/problem+json": components["schemas"]["Error"];
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["Error.jsonld"];
+                    "application/problem+json": components["schemas"]["Error"];
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description An error occurred */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["ConstraintViolation.jsonld"];
+                    "application/problem+json": components["schemas"]["ConstraintViolation"];
+                    "application/json": components["schemas"]["ConstraintViolation"];
+                };
+            };
+        };
+    };
+}
