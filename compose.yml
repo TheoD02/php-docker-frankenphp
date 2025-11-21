@@ -11,7 +11,6 @@ services:
       - "${APP_PORT:-8080}:8080"
       - "${VITE_PORT:-5173}:5173"
     volumes:
-      # En dev, monter le code source pour le hot reload
       - .:/app
     environment:
       # Configuration Xdebug
@@ -19,7 +18,7 @@ services:
       - XDEBUG_CONFIG=${XDEBUG_CONFIG:-client_host=host.docker.internal}
       - PHP_IDE_CONFIG=serverName=symfony-app
     networks:
-      - symfony
+      - database
     depends_on:
       database:
         condition: service_healthy
@@ -44,7 +43,7 @@ services:
     ports:
       - "${DATABASE_PORT:-5432}:5432"
     networks:
-      - symfony
+      - database
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-app}" ]
       interval: 10s
@@ -53,9 +52,13 @@ services:
       start_period: 10s
 
 networks:
-  symfony:
+  database:
     driver: bridge
 
 volumes:
   database-data:
     driver: local
+
+  ###> doctrine/doctrine-bundle ###
+  database_data:
+###< doctrine/doctrine-bundle ###

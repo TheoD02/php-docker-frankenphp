@@ -20,7 +20,7 @@ WORKDIR /app
 
 RUN groupmod -g 1000 www-data \
     && usermod -u 1000 -g 1000 www-data \
-    && chown -R www-data:www-data /app
+    && chown -R www-data:www-data /app /var/www
 
 # ==============================================================================
 # Base commune pour tous les environnements avec versioning, healthcheck, etc.
@@ -153,7 +153,6 @@ ENV APP_ENV=dev
 ENV APP_DEBUG=1
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    fish \
     curl \
     && pecl install xdebug \
     && docker-php-ext-enable xdebug \
