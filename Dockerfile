@@ -194,6 +194,8 @@ FROM app-dev AS integration
 ENV APP_ENV=integration
 ENV APP_DEBUG=1
 
+COPY --from=composer-dev --chown=www-data:www-data /app/vendor ./vendor
+
 FROM app-dev AS ci
 
 RUN curl --proto '=https' --tlsv1.2 -sSfO https://carthage.software/mago.sh \
