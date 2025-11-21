@@ -1,12 +1,51 @@
 {
-    "type": "module",
-    "private": true,
-    "scripts": {
-        "dev": "vite",
-        "build": "vite build"
-    },
-    "devDependencies": {
-        "vite": "^6.0",
-        "vite-plugin-symfony": "^8.2"
-    }
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm:dev:vite\" \"npm:openapi:watch\" -n vite,openapi -c blue,green",
+    "dev:vite": "vite",
+    "build": "vite build",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "openapi:generate": "openapi-typescript http://localhost:8000/api/docs.jsonopenapi -o assets/types/api.d.ts",
+    "openapi:watch": "chokidar \"src/**/*\" \"config/**/*\" -c \"npm run openapi:generate\""
+  },
+  "devDependencies": {
+    "@tanstack/react-query-devtools": "^5.90.2",
+    "@tanstack/router-devtools": "^1.136.2",
+    "@tanstack/router-vite-plugin": "^1.136.2",
+    "@types/node": "^24.10.1",
+    "@types/react": "^19.2.4",
+    "@types/react-dom": "^19.2.3",
+    "chokidar": "^4.0.3",
+    "chokidar-cli": "^3.0.0",
+    "concurrently": "^9.2.1",
+    "openapi-typescript": "^7.10.1",
+    "postcss": "^8.5.6",
+    "postcss-preset-mantine": "^1.18.0",
+    "postcss-simple-vars": "^7.0.1",
+    "prettier": "^3.6.2",
+    "typescript": "^5.9.3",
+    "vite": "^6.0",
+    "vite-plugin-symfony": "^8.2.2"
+  },
+  "dependencies": {
+    "@mantine/charts": "^8.3.7",
+    "@mantine/core": "^8.3.7",
+    "@mantine/dates": "^8.3.7",
+    "@mantine/hooks": "^8.3.7",
+    "@mantine/modals": "^8.3.7",
+    "@mantine/notifications": "^8.3.7",
+    "@mantine/nprogress": "^8.3.7",
+    "@tabler/icons-react": "^3.35.0",
+    "@tanstack/react-form": "^1.25.0",
+    "@tanstack/react-router": "^1.136.2",
+    "@vitejs/plugin-react": "^5.1.1",
+    "dayjs": "^1.11.19",
+    "openapi-fetch": "^0.15.0",
+    "openapi-react-query": "^0.5.1",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "recharts": "^3.4.1"
+  }
 }

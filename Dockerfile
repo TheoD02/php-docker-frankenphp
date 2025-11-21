@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1.4
 
 FROM composer:2.9 AS composer-official
-FROM node:22-alpine AS node-official
+FROM node:24-trixie-slim AS node-official
 
 # ==============================================================================
 # Base FrankenPHP + Caddy avec PHP 8.4 sous Debian Trixie
@@ -102,7 +102,7 @@ FROM node-official AS node-build
 
 WORKDIR /app
 
-COPY package.json package-lock.json ./
+COPY --link package*.json ./
 
 RUN --mount=type=cache,target=/root/.npm \
     npm ci
@@ -181,10 +181,19 @@ COPY --from=node-official /usr/local/lib /usr/local/lib
 COPY --from=node-official /usr/local/include /usr/local/include
 COPY --from=node-official /usr/local/bin /usr/local/bin
 
+USER root
+
+# Create npm & npx symlinks
+RUN ln -sf /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm && \
+    ln -sf /usr/local/lib/node_modules/npm/bin/npx-cli.js /usr/local/bin/npx
+
+
 RUN curl --proto '=https' --tlsv1.2 -sSfO https://carthage.software/mago.sh \
     && bash mago.sh \
     && chmod +x /usr/local/bin/mago \
     && rm mago.sh
+
+USER www-data
 
 # ==============================================================================
 # Stage: integration

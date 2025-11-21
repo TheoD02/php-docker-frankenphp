@@ -1,0 +1,17 @@
+# Ignore everything by default
+*
+
+# But allow assets directory
+!assets/
+!assets/**
+
+# Allow React/Node configuration files
+!package.json
+!tsconfig.json
+!vite.config.ts
+!postcss.config.cjs
+!.prettierrc
+!.eslintrc*
+!babel.config.*
+!jest.config.*
+!tailwind.config.*
