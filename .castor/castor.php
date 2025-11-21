@@ -25,5 +25,5 @@ function install(): void
 #[AsTask]
 function shell(): void
 {
-    run(['docker', 'compose', 'exec', 'app', 'bash'], context: context()->withTty());
+    run(['docker', 'compose', 'exec', 'app', 'bash'], context: context()->withTty()->withAllowFailure());
 }
