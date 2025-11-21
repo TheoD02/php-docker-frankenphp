@@ -1,0 +1,70 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Docker
+.docker
+docker-compose*.yml
+Dockerfile*
+.dockerignore
+
+# Documentation
+README.md
+CHANGELOG.md
+LICENSE
+*.md
+
+# CI/CD
+.github
+.gitlab-ci.yml
+.travis.yml
+azure-pipelines.yml
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Symfony
+/var/cache/*
+/var/log/*
+/var/sessions/*
+!/var/cache/.gitkeep
+!/var/log/.gitkeep
+!/var/sessions/.gitkeep
+
+# Dependencies (will be installed in the build)
+/vendor
+/node_modules
+
+# Build artifacts
+/public/build/*
+!/public/build/.gitkeep
+
+# Environment
+.env.local
+.env.*.local
+.env.test
+.env.prod
+
+# Tests
+/tests
+/phpunit.xml.dist
+/.phpunit.result.cache
+
+# Tools
+/bin/phpunit
+/bin/.phpunit
+/.php-cs-fixer.cache
+/phpstan.neon
+/psalm.xml
+
+# Backups
+*.backup
+*.bak
+*.tmp
+*.old
