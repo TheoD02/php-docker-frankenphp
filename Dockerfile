@@ -127,7 +127,7 @@ COPY --chmod=644 docker/caddy/Caddyfile /etc/caddy/Caddyfile
 
 COPY --from=composer-prod --chown=www-data:www-data /app/vendor ./vendor
 
-COPY --from=node-build --chown=www-data:www-data /app/public/build ./public/build
+# COPY --from=node-build --chown=www-data:www-data /app/public/build ./public/build
 
 COPY --chown=www-data:www-data . .
 
