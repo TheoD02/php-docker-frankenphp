@@ -7,9 +7,6 @@ services:
             args:
                 BUILDKIT_INLINE_CACHE: 1
         container_name: symfony-perso-app
-        ports:
-            - "${APP_PORT:-8080}:8080"
-            - "${VITE_PORT:-5173}:5173"
         volumes:
             - .:/app
             - user-data:/home/www-data
@@ -20,17 +17,34 @@ services:
             - PHP_IDE_CONFIG=serverName=symfony-perso-app
         networks:
             - database
+            - traefik
         depends_on:
             database:
                 condition: service_healthy
-        healthcheck:
-            test: [ "CMD", "curl", "-f", "http://localhost:8080/healthz" ]
-            interval: 30s
-            timeout: 3s
-            retries: 3
-            start_period: 40s
         extra_hosts:
             - "host.docker.internal:host-gateway"
+        labels:
+            - "traefik.enable=true"
+            - "traefik.docker.network=traefik"
+            - "traefik.http.routers.symfony-perso-php.rule=Host(`symfony-perso.web.localhost`)"
+            - "traefik.http.routers.symfony-perso-php.tls=true"
+            - "traefik.http.services.symfony-perso-php.loadbalancer.server.port=8080"
+
+    vite:
+        image: node:24-trixie-slim
+        container_name: symfony-perso-vite
+        working_dir: /app
+        networks:
+            - traefik
+        volumes:
+            - ./:/app
+        command: npm run dev
+        labels:
+            - "traefik.enable=true"
+            - "traefik.docker.network=traefik"
+            - "traefik.http.routers.symfony-perso-vite.rule=Host(`symfony-perso-vite.web.localhost`)"
+            - "traefik.http.routers.symfony-perso-vite.tls=true"
+            - "traefik.http.services.symfony-perso-vite.loadbalancer.server.port=5173"
 
     database:
         image: mariadb:12.1.2
@@ -51,6 +65,8 @@ services:
             retries: 5
 
 networks:
+    traefik:
+        external: true
     database: ~
 
 volumes:
