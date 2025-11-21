@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN set -eux; \
     install-php-extensions \
-        pdo_pgsql \
+        pdo_mysql \
     ;
 
 WORKDIR /app
@@ -139,12 +139,18 @@ RUN mkdir -p var/cache var/log var/sessions /data/caddy /config/caddy \
     && chown -R www-data:www-data var /data/caddy /config/caddy \
     && chmod -R 775 var
 
+COPY --chmod=755 docker/scripts/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+
 USER www-data
+
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 
 # ==============================================================================
 # Stage: staging (preprod)
 # ==============================================================================
 FROM prod AS staging
+
+ENV APP_ENV=staging
 
 # same for now
 
@@ -181,22 +187,21 @@ EXPOSE 5173
 # ==============================================================================
 FROM app-dev AS dev
 
-COPY --from=node-official /usr/lib /usr/lib
-COPY --from=node-official /usr/local/lib /usr/local/lib
-COPY --from=node-official /usr/local/include /usr/local/include
-COPY --from=node-official /usr/local/bin /usr/local/bin
-
 USER root
-
-# Create npm & npx symlinks
-RUN ln -sf /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm && \
-    ln -sf /usr/local/lib/node_modules/npm/bin/npx-cli.js /usr/local/bin/npx
-
 
 RUN curl --proto '=https' --tlsv1.2 -sSfO https://carthage.software/mago.sh \
     && bash mago.sh \
     && chmod +x /usr/local/bin/mago \
     && rm mago.sh
+
+COPY --from=node-official /usr/lib /usr/lib
+COPY --from=node-official /usr/local/lib /usr/local/lib
+COPY --from=node-official /usr/local/include /usr/local/include
+COPY --from=node-official /usr/local/bin /usr/local/bin
+
+# Create npm & npx symlinks
+RUN ln -sf /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm && \
+    ln -sf /usr/local/lib/node_modules/npm/bin/npx-cli.js /usr/local/bin/npx
 
 USER www-data
 

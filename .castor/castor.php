@@ -22,8 +22,27 @@ function install(): void
     start();
 }
 
-#[AsTask]
-function shell(): void
+#[AsTask(aliases: ['console'])]
+function shell(string $cmd): void
 {
-    run(['docker', 'compose', 'exec', 'app', 'bash'], context: context()->withTty()->withAllowFailure());
+    $cmds = ['docker', 'compose', 'exec', 'app', 'bash'];
+
+    if ($cmd !== '') {
+        $cmds[] = '-c';
+        $cmds[] = $cmd;
+    }
+
+    run($cmds, context: context()->withTty()->withAllowFailure());
+}
+
+#[AsTask]
+function console(string $cmd): void
+{
+    $cmds = ['docker', 'compose', 'exec', 'app', 'php', 'bin/console'];
+
+    if ($cmd !== '') {
+        $cmds[] = $cmd;
+    }
+
+    run($cmds, context: context()->withTty()->withAllowFailure());
 }
