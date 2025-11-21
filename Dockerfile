@@ -137,16 +137,16 @@ RUN mkdir -p var/cache var/log var/sessions /data/caddy /config/caddy \
 USER www-data
 
 # ==============================================================================
-# Stage: staging
+# Stage: staging (preprod)
 # ==============================================================================
 FROM prod AS staging
 
 # same for now
 
 # ==============================================================================
-# Stage: dev
+# Stage: app-dev (common dev setup ci/integration and local development)
 # ==============================================================================
-FROM app-base AS dev
+FROM app-base AS app-dev
 
 ENV APP_ENV=dev
 ENV APP_DEBUG=1
@@ -159,16 +159,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 COPY --from=composer-official /usr/bin/composer /usr/bin/composer
 
-COPY --from=node-official /usr/lib /usr/lib
-COPY --from=node-official /usr/local/lib /usr/local/lib
-COPY --from=node-official /usr/local/include /usr/local/include
-COPY --from=node-official /usr/local/bin /usr/local/bin
-
-RUN curl --proto '=https' --tlsv1.2 -sSfO https://carthage.software/mago.sh \
-    && bash mago.sh \
-    && chmod +x /usr/local/bin/mago \
-    && rm mago.sh
-
 COPY docker/php/php-dev.ini /usr/local/etc/php/conf.d/zzz-app.ini
 
 COPY --chown=www-data:www-data . .
@@ -180,3 +170,33 @@ RUN mkdir -p var/cache var/log var/sessions /data/caddy /config/caddy \
 USER www-data
 
 EXPOSE 5173
+
+# ==============================================================================
+# Stage: dev
+# ==============================================================================
+FROM app-dev AS dev
+
+COPY --from=node-official /usr/lib /usr/lib
+COPY --from=node-official /usr/local/lib /usr/local/lib
+COPY --from=node-official /usr/local/include /usr/local/include
+COPY --from=node-official /usr/local/bin /usr/local/bin
+
+RUN curl --proto '=https' --tlsv1.2 -sSfO https://carthage.software/mago.sh \
+    && bash mago.sh \
+    && chmod +x /usr/local/bin/mago \
+    && rm mago.sh
+
+# ==============================================================================
+# Stage: integration
+# ==============================================================================
+FROM app-dev AS integration
+
+ENV APP_ENV=integration
+ENV APP_DEBUG=1
+
+FROM app-dev AS ci
+
+RUN curl --proto '=https' --tlsv1.2 -sSfO https://carthage.software/mago.sh \
+    && bash mago.sh \
+    && chmod +x /usr/local/bin/mago \
+    && rm mago.sh
