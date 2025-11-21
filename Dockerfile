@@ -196,6 +196,9 @@ ENV APP_DEBUG=1
 
 COPY --from=composer-dev --chown=www-data:www-data /app/vendor ./vendor
 
+RUN php bin/console assets:install --symlink --relative \
+    && php bin/console cache:clear
+
 FROM app-dev AS ci
 
 RUN curl --proto '=https' --tlsv1.2 -sSfO https://carthage.software/mago.sh \
