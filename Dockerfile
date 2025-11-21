@@ -45,6 +45,10 @@ EXPOSE 8080
 
 COPY --chmod=644 docker/caddy/Caddyfile /etc/caddy/Caddyfile
 
+COPY --chmod=755 docker/scripts/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+
 HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 CMD curl -f http://localhost:2019/metrics || exit 1
 
 CMD ["frankenphp", "run", "--config", "/etc/caddy/Caddyfile"]
@@ -139,11 +143,7 @@ RUN mkdir -p var/cache var/log var/sessions /data/caddy /config/caddy \
     && chown -R www-data:www-data var /data/caddy /config/caddy \
     && chmod -R 775 var
 
-COPY --chmod=755 docker/scripts/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-
 USER www-data
-
-ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 
 # ==============================================================================
 # Stage: staging (preprod)
