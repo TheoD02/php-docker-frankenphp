@@ -109,7 +109,7 @@ RUN --mount=type=cache,target=/root/.npm \
     npm ci
 
 COPY assets ./assets
-COPY vite.config.ts tsconfig.json ./
+COPY vite.config.ts tsconfig.json tsconfig.*.json ./
 
 RUN npm run build
 
