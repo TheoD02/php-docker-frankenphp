@@ -70,6 +70,20 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "mago-fmt": "mago fmt --dry-run",
+        "mago-fmt-fix": "mago fmt",
+        "mago-lint": "mago lint",
+        "mago-lint-fix": "mago lint --fix --potentially-unsafe",
+        "mago-analyze": "mago analyze",
+        "mago": [
+            "@mago-fmt",
+            "@mago-lint",
+            "@mago-analyze"
+        ],
+        "mago-fix": [
+            "@mago-lint-fix",
+            "@mago-fmt-fix"
         ]
     },
     "conflict": {

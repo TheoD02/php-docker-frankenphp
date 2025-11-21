@@ -164,6 +164,11 @@ COPY --from=node-official /usr/local/lib /usr/local/lib
 COPY --from=node-official /usr/local/include /usr/local/include
 COPY --from=node-official /usr/local/bin /usr/local/bin
 
+RUN curl --proto '=https' --tlsv1.2 -sSfO https://carthage.software/mago.sh \
+    && bash mago.sh \
+    && chmod +x /usr/local/bin/mago \
+    && rm mago.sh
+
 COPY docker/php/php-dev.ini /usr/local/etc/php/conf.d/zzz-app.ini
 
 COPY --chown=www-data:www-data . .
