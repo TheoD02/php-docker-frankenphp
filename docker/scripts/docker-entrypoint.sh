@@ -51,18 +51,13 @@ run_migrations() {
     fi
 }
 
-# Main initialization for production/staging environments
-if [ "$APP_ENV" = "prod" ] || [ "$APP_ENV" = "staging" ]; then
-    echo -e "${YELLOW}Running production initialization...${NC}"
+echo -e "${YELLOW}Running initialization scripts...${NC}"
 
-    # Wait for database
-    wait_for_database || exit 1
+wait_for_database || exit 1
 
-    # Run migrations
-    run_migrations || exit 1
+run_migrations || exit 1
 
-    echo -e "${GREEN}✓ Container initialization completed${NC}"
-fi
+echo -e "${GREEN}✓ Container initialization completed${NC}"
 
 # Execute the main container command
 echo -e "${YELLOW}Starting application...${NC}"
