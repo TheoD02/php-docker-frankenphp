@@ -1,12 +1,12 @@
 # syntax=docker/dockerfile:1.4
 
-FROM composer:2.9 AS composer-official
+FROM composer:2.10 AS composer-official
 FROM node:24-trixie-slim AS node-official
 
 # ==============================================================================
-# Base FrankenPHP + Caddy avec PHP 8.4 sous Debian Trixie
+# Base FrankenPHP + Caddy avec PHP 8.5 sous Debian Trixie
 # ==============================================================================
-FROM dunglas/frankenphp:php8.4.27-trixie AS php-base
+FROM dunglas/frankenphp:php8.5.12-trixie AS php-base
 
 ENV SERVER_NAME=":8080"
 
