@@ -6,7 +6,7 @@ FROM node:24-trixie-slim AS node-official
 # ==============================================================================
 # Base FrankenPHP + Caddy avec PHP 8.4 sous Debian Trixie
 # ==============================================================================
-FROM dunglas/frankenphp:php8.4.15-trixie AS php-base
+FROM dunglas/frankenphp:php8.4.27-trixie AS php-base
 
 ENV SERVER_NAME=":8080"
 
