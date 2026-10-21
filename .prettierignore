@@ -15,3 +15,5 @@
 !babel.config.*
 !jest.config.*
 !tailwind.config.*
+assets/routeTree.gen.ts
+assets/types/api.d.ts
