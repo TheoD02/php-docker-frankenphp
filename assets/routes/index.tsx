@@ -1,8 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { Hero } from '@components/home/Hero';
-import { Features } from '@components/home/Features';
-import { HowItWorks } from '@components/home/HowItWorks';
-import { CTA } from '@components/home/CTA';
+import { Container, Title } from '@mantine/core';
 
 export const Route = createFileRoute('/')({
   component: Index,
@@ -10,11 +7,8 @@ export const Route = createFileRoute('/')({
 
 function Index() {
   return (
-    <>
-      <Hero />
-      <Features />
-      <HowItWorks />
-      <CTA />
-    </>
+    <Container py="xl">
+      <Title order={1}>Home</Title>
+    </Container>
   );
 }

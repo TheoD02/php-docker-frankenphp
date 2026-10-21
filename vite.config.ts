@@ -25,8 +25,8 @@ export default defineConfig({
         },
         tanstackRouter({
             target: 'react',
-            routesDirectory: path.resolve(__dirname, 'assets', 'routes'),
-            generatedRouteTree: path.resolve(__dirname, 'assets', 'routeTree.gen.ts'),
+            routesDirectory: path.resolve(import.meta.dirname, 'assets', 'routes'),
+            generatedRouteTree: path.resolve(import.meta.dirname, 'assets', 'routeTree.gen.ts'),
             autoCodeSplitting: true,
         }),
         react(),
@@ -51,16 +51,16 @@ export default defineConfig({
     },
     resolve: {
         alias: {
-            '@': path.resolve(__dirname, './assets'),
-            '@components': path.resolve(__dirname, './assets/components'),
-            '@hooks': path.resolve(__dirname, './assets/hooks'),
-            '@lib': path.resolve(__dirname, './assets/lib'),
-            '@utils': path.resolve(__dirname, './assets/utils'),
-            '@types': path.resolve(__dirname, './assets/types'),
+            '@': path.resolve(import.meta.dirname, './assets'),
+            '@components': path.resolve(import.meta.dirname, './assets/components'),
+            '@hooks': path.resolve(import.meta.dirname, './assets/hooks'),
+            '@lib': path.resolve(import.meta.dirname, './assets/lib'),
+            '@utils': path.resolve(import.meta.dirname, './assets/utils'),
+            '@types': path.resolve(import.meta.dirname, './assets/types'),
         },
     },
     build: {
-        rollupOptions: {
+        rolldownOptions: {
             input: {
                 app: './assets/root.tsx',
             },
