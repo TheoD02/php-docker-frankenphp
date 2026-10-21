@@ -97,6 +97,7 @@
         }
     },
     "require-dev": {
+        "carthage-software/mago": "^1.58",
         "symfony/debug-bundle": "8.1.*",
         "symfony/maker-bundle": "^1.64",
         "symfony/stopwatch": "8.1.*",
